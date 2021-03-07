@@ -1,0 +1,91 @@
+import java.util.Scanner;
+public class game {
+    //the input grid
+    public static void generate(int [][] grid)
+    {
+        Scanner input = new Scanner(System.in);
+        for(int i=0; i < grid.length; i++)
+        {
+            for(int j=0; j < grid[0].length; j++)
+            {
+                grid[i][j] = input.nextInt();
+            }
+        }
+    }
+   //print the input grid
+    public static void printgrid(int [][] grid)
+   {
+       for(int i=0; i <  grid.length; i++)
+       {
+           for(int j=0; j < grid[0].length; j++) {
+               System.out.print(grid[i][j] +" ");
+           }
+           System.out.println();
+       }
+   }
+    //calculate the neighbour sum
+    // node neighbout sum is using modulo for corner border elements
+    public static int sum(int [][] grid, int x, int y)
+    {
+        int row = grid.length;
+        int col = grid[0].length;
+        int sum =0;
+        for(int i=-1; i < 2; i++)
+        {
+            for(int j = -1; j < 2; j++)
+            {
+                sum += grid[(x+i+row)%row][(y+j+col)%col];
+            }
+        }
+        return sum;
+    }
+    public static void calculatenextgrid(int [][] grid, int[][] nextgrid)
+    {
+        for(int i=0; i < grid.length; i++)
+        {
+            for(int j=0; j < grid[0].length; j++)
+            {
+                if(grid[i][j] == 1 && (sum(grid,i,j) > 3 || sum(grid,i,j) < 2))
+                {
+                    nextgrid[i][j] = 0;
+                }
+                else if(grid[i][j] == 0 && sum(grid,i,j) == 3)
+                {
+                    nextgrid[i][j] = 1;
+                }
+                else
+                {
+                    nextgrid[i][j] = grid[i][j];
+                }
+            }
+        }
+    }
+    //print the nextgrid
+    public static void printnextgrid(int [][] nextgrid)
+    {
+        for(int i=0; i < nextgrid.length; i++)
+        {
+            for(int j=0; j < nextgrid[0].length; j++) {
+                System.out.print(nextgrid[i][j] +" ");
+            }
+            System.out.println();
+        }
+    }
+   // Main function
+    public static void main(String[] args)
+    {
+        Scanner input = new Scanner(System.in);
+        int row = input.nextInt();
+        int col = input.nextInt();
+        int [][] grid = new int [row][col];
+        generate(grid);
+        System.out.println("Input Matrix");
+        printgrid(grid);
+       //next generation
+        int [][] nextgrid = new int[row][col];
+        calculatenextgrid(grid,nextgrid);
+        // print next generation
+        System.out.println("Output Matrix");
+        printnextgrid(nextgrid);
+    }
+}
